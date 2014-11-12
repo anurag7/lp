@@ -36,7 +36,13 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mongoengine.django.mongo_auth',
+    'gunicorn',
+
 )
+AUTH_USER_MODEL = 'mongo_auth.MongoUser'
+
+# MONGOENGINE_USER_DOCUMENT = 'mongoengine.django.auth.User'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -46,6 +52,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
+
+SESSION_ENGINE = 'mongoengine.django.sessions'
+SESSION_SERIALIZER = 'mongoengine.django.sessions.BSONSerializer'
 
 ROOT_URLCONF = 'liarspoker.urls'
 
@@ -57,11 +66,17 @@ WSGI_APPLICATION = 'liarspoker.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.dummy', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'heroku_app29142271',                      # Or path to database file if using sqlite3.
+        'USER': 'heroku_app29142271',                      # Not used with sqlite3.
+        'PASSWORD': 'dfio1s4j9bla31l1n8kh41l21s',                  # Not used with sqlite3.
+        'HOST': 'ds035300.mongolab.com:',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '35300'                      # Set to empty string for default. Not used with sqlite3.
     }
 }
-
+AUTHENTICATION_BACKENDS = (
+    'mongoengine.django.auth.MongoEngineBackend',
+)
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
